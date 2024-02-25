@@ -2,13 +2,13 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class RutaTXT {
-
-    private static String Ruta = "";
-    private static String RutaLinux = "/";
+    private static String RutaLinux = System.getProperty("user.dir")+"/";
     private static String RutaWindows = System.getProperty("user.dir")+"\\";
 
     public static void main(String[] args) {
-        System.out.println("Ruta:"+rutaEntrada());
+        System.out.println("Ruta de entrada:"+rutaEntrada());
+        System.out.println("Ruta de salida:"+rutaSalida());
+
     }
 
 
@@ -42,26 +42,18 @@ public class RutaTXT {
         return archivosTxtList;
     }
 
-   
-
-
-    public static String rutaSalida(String rutaDeEntrada){
-        String nombre = rutaDeEntrada.substring(0, rutaDeEntrada.length()-5);
-        return nombre+"salida.txt";
-
+    public static String rutaSalida(){
+        return Path()+"textoSalida.txt";
     }
 
+    
     public static String rutaEntrada(){
 
         ArrayList<String> nombreArchivosTexto = new ArrayList<String>();
 
-        if(System.getProperty("os.name").contains("Windows")) {
-            nombreArchivosTexto = obtenerArchivosTXT(RutaWindows);
-        }else{
-            nombreArchivosTexto = obtenerArchivosTXT(RutaLinux);
-        }
+        nombreArchivosTexto = obtenerArchivosTXT(Path());
         
-        int opcion = 0;
+        String opcion = "";
         if(nombreArchivosTexto.size()==0){
             System.out.println("No hay archivos de texto en la carpeta");
             System.out.println("Saliendo del programa");
@@ -71,18 +63,16 @@ public class RutaTXT {
         while(true){
             System.out.println("Selecciona el archivo de entrada:");
             for(int i=0;i<nombreArchivosTexto.size();i++){
-                System.out.println(i+"-"+nombreArchivosTexto.get(i));
+                System.out.println("->"+nombreArchivosTexto.get(i));
             }
-            System.out.println("Opcion:");
+            System.out.print("Opcion:");
             try{
-                opcion = Integer.parseInt(System.console().readLine());
-                if(opcion>=0 && opcion<nombreArchivosTexto.size()){
-                    if(System.getProperty("os.name").contains("Windows")) {
-                        Ruta = RutaWindows;
-                    }else{
-                        Ruta = RutaLinux;
-                    }
-                    return Ruta+nombreArchivosTexto.get(opcion);
+                opcion = System.console().readLine();
+                if(!opcion.contains(".txt")){
+                    opcion += ".txt";
+                }
+                if(nombreArchivosTexto.contains(opcion)){
+                    return Path()+opcion;
                 }else{
                     System.out.println("Opcion invalida\n");
                     
@@ -93,4 +83,13 @@ public class RutaTXT {
         }
 
     }
+
+    private static String Path(){
+        if(System.getProperty("os.name").contains("Windows")) {
+            return RutaWindows;
+        }else{
+            return RutaLinux;
+        }
+    }
+
 }

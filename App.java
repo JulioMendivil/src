@@ -2,6 +2,9 @@ public class App {
     public static void main(String[] args) throws Exception {
         System.out.println("Hello, World!");
 
+        String rutaEntrada = RutaTXT.rutaEntrada();
+        String rutaSalida = RutaTXT.rutaSalida();
+
         Tube InP_CS = new Tube();
         Tube CS_Sort = new Tube();
         Tube inpOutput = new Tube();
